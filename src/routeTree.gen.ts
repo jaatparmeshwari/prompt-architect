@@ -16,6 +16,7 @@ import { Route as DoctorRouteImport } from './routes/doctor'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as HistoryRouteImport } from './routes/history'
+import { Route as IntegrationLoginRouteImport } from './routes/integration-login'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrescriptionsRouteImport } from './routes/prescriptions'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -23,6 +24,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReceiptRouteImport } from './routes/receipt'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as DoctorPatientRouteImport } from './routes/doctor_.patient'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -57,6 +59,11 @@ const HelpRoute = HelpRouteImport.update({
 const HistoryRoute = HistoryRouteImport.update({
   id: '/history',
   path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegrationLoginRoute = IntegrationLoginRouteImport.update({
+  id: '/integration-login',
+  path: '/integration-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -94,6 +101,11 @@ const DoctorPatientRoute = DoctorPatientRouteImport.update({
   path: '/doctor/patient',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/documents': typeof DocumentsRoute
   '/help': typeof HelpRoute
   '/history': typeof HistoryRoute
+  '/integration-login': typeof IntegrationLoginRoute
   '/login': typeof LoginRoute
   '/prescriptions': typeof PrescriptionsRoute
   '/privacy': typeof PrivacyRoute
@@ -110,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/receipt': typeof ReceiptRoute
   '/signup': typeof SignupRoute
   '/doctor/patient': typeof DoctorPatientRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -119,6 +133,7 @@ export interface FileRoutesByTo {
   '/documents': typeof DocumentsRoute
   '/help': typeof HelpRoute
   '/history': typeof HistoryRoute
+  '/integration-login': typeof IntegrationLoginRoute
   '/login': typeof LoginRoute
   '/prescriptions': typeof PrescriptionsRoute
   '/privacy': typeof PrivacyRoute
@@ -126,6 +141,7 @@ export interface FileRoutesByTo {
   '/receipt': typeof ReceiptRoute
   '/signup': typeof SignupRoute
   '/doctor/patient': typeof DoctorPatientRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -136,6 +152,7 @@ export interface FileRoutesById {
   '/documents': typeof DocumentsRoute
   '/help': typeof HelpRoute
   '/history': typeof HistoryRoute
+  '/integration-login': typeof IntegrationLoginRoute
   '/login': typeof LoginRoute
   '/prescriptions': typeof PrescriptionsRoute
   '/privacy': typeof PrivacyRoute
@@ -143,6 +160,7 @@ export interface FileRoutesById {
   '/receipt': typeof ReceiptRoute
   '/signup': typeof SignupRoute
   '/doctor_/patient': typeof DoctorPatientRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -154,6 +172,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/help'
     | '/history'
+    | '/integration-login'
     | '/login'
     | '/prescriptions'
     | '/privacy'
@@ -161,6 +180,7 @@ export interface FileRouteTypes {
     | '/receipt'
     | '/signup'
     | '/doctor/patient'
+    | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -170,6 +190,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/help'
     | '/history'
+    | '/integration-login'
     | '/login'
     | '/prescriptions'
     | '/privacy'
@@ -177,6 +198,7 @@ export interface FileRouteTypes {
     | '/receipt'
     | '/signup'
     | '/doctor/patient'
+    | '/.lovable/oauth/consent'
   id:
     | '__root__'
     | '/'
@@ -186,6 +208,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/help'
     | '/history'
+    | '/integration-login'
     | '/login'
     | '/prescriptions'
     | '/privacy'
@@ -193,6 +216,7 @@ export interface FileRouteTypes {
     | '/receipt'
     | '/signup'
     | '/doctor_/patient'
+    | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,6 +227,7 @@ export interface RootRouteChildren {
   DocumentsRoute: typeof DocumentsRoute
   HelpRoute: typeof HelpRoute
   HistoryRoute: typeof HistoryRoute
+  IntegrationLoginRoute: typeof IntegrationLoginRoute
   LoginRoute: typeof LoginRoute
   PrescriptionsRoute: typeof PrescriptionsRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -210,6 +235,7 @@ export interface RootRouteChildren {
   ReceiptRoute: typeof ReceiptRoute
   SignupRoute: typeof SignupRoute
   DoctorPatientRoute: typeof DoctorPatientRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -263,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/integration-login': {
+      id: '/integration-login'
+      path: '/integration-login'
+      fullPath: '/integration-login'
+      preLoaderRoute: typeof IntegrationLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -312,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DoctorPatientRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -323,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocumentsRoute: DocumentsRoute,
   HelpRoute: HelpRoute,
   HistoryRoute: HistoryRoute,
+  IntegrationLoginRoute: IntegrationLoginRoute,
   LoginRoute: LoginRoute,
   PrescriptionsRoute: PrescriptionsRoute,
   PrivacyRoute: PrivacyRoute,
@@ -330,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReceiptRoute: ReceiptRoute,
   SignupRoute: SignupRoute,
   DoctorPatientRoute: DoctorPatientRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

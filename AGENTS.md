@@ -15,3 +15,5 @@
 - Demo roles are UI simulation only, never production authorization; real private API endpoints must enforce server-side identity and role checks when integrated.
 - Keep reusable CareBrief presentation in `src/components/carebrief` and semantic visual tokens in `src/styles.css` so the patient and doctor experiences stay consistent.
 - Browser-only draft, upload and demo session operations run in effects or event handlers to preserve SSR compatibility.
+- App MCP uses `@lovable.dev/mcp-js` and its TanStack plugin at `/mcp` with managed OAuth and explicit consent; expose app information only, never fictional or real patient records, until user-scoped backend authorization exists.
+- Integration sign-in stays separate from patient demo OTP and preserves a validated consent return path; demo sessions cannot authorize external assistants.

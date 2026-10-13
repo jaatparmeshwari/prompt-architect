@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "sdk_version": "3.0.5",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://hdydfsuasjsmjrnyodwn.supabase.co/auth/v1",
+    "require_oauth_client_claim": true,
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "prompt-architect",
+      "version": "0.1.0",
+      "title": "Prompt Architect"
+    },
+    "tools": [
+      {
+        "name": "get_app_info",
+        "title": "Get app information",
+        "description": "Read CareBrief demo capabilities and integration privacy boundaries without accessing patient records.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

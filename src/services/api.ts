@@ -1,5 +1,5 @@
 import type { Patient, MedicalRecord, ConsultationDraft, Receipt } from '@/types/carebrief';
-export const useMock = import.meta.env.VITE_USE_MOCK !== 'false';
+export const useMock = import.meta.env['VITE_USE_MOCK'] !== 'false';
 export const patient: Patient = { id: 'CB-2024-0842', name: 'Arjun Sharma', age: 34, sex: 'Male', mobile: '9876543210', language: 'English' };
 export const records: MedicalRecord[] = [
  { id: 'v1', title: 'General consultation', type: 'Visit', date: '2026-10-08', doctor: 'Dr. Meera Patel', description: 'Follow-up for blood pressure. Patient reports feeling well. Continue the clinician-prescribed medicine and return in four weeks.', confirmed: true },
@@ -9,9 +9,9 @@ export const records: MedicalRecord[] = [
 ];
 async function request<T>(path: string, fallback: T, body?: unknown): Promise<T> {
  if (useMock) { await new Promise(resolve => setTimeout(resolve, 350)); return fallback; }
- const base = import.meta.env.VITE_API_BASE_URL;
+ const base = import.meta.env['VITE_API_BASE_URL'];
  if (!base) throw new Error('The real service is not connected. Enable demo mode to continue.');
- const res = await fetch(`${base}${path}`, { credentials: 'include', method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+ const res = await fetch(`${base}${path}`, { credentials: 'include', method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : null });
  if (!res.ok) throw new Error('Unable to load your information. Please try again.');
  return res.json();
 }

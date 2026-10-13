@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Dashboard } from '@/components/carebrief/dashboard';
+import { PortalView } from '@/components/carebrief/portal-view';
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: 'CareBrief — Patient dashboard' },
-    { name: 'description', content: 'Your CareBrief appointments, medical history, reports and prescriptions in one place. Fictional demo.' },
-    { property: 'og:title', content: 'CareBrief — Patient dashboard' },
-    { property: 'og:description', content: 'Your care journey, all in one place.' },
+    { title: 'Aayu CareBrief — Patient Portal' },
+    { name: 'description', content: 'Patient registration, Aadhaar verification, and digital doctor consultation.' },
+    { property: 'og:title', content: 'Aayu CareBrief — Patient Portal' },
+    { property: 'og:description', content: 'Patient registration, Aadhaar verification, and digital doctor consultation.' },
     { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
   ] }),
-  component: Dashboard,
+  component: PortalView,
 });

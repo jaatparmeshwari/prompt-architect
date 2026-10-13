@@ -9,10 +9,155 @@ import type { MedicalRecord } from '@/types/carebrief';
 import doctorPhoto from '@/assets/doctor.png';
 import patientPhoto from '@/assets/patient.jpg';
 export function MedicalHistory() {
- const { data = [], isLoading, error, refetch } = useQuery({ queryKey: ['records'], queryFn: api.getRecords });
- const [search, setSearch] = useState(''); const [type, setType] = useState('All records'); const [date, setDate] = useState('All dates'); const [expanded, setExpanded] = useState<string[]>([]); const [preview, setPreview] = useState<MedicalRecord | null>(null);
- const filtered = data.filter(r => `${r.title} ${r.doctor}`.toLowerCase().includes(search.toLowerCase()) && (type === 'All records' || r.type === type) && (date === 'All dates' || r.date.startsWith('2026-10')));
- return <><PageHeading title="Medical history" subtitle="A clear picture of your health, one visit at a time." action={<Button asChild variant="outline"><Link to="/documents"><Plus />Add a document</Link></Button>} /><div className="search-row"><div className="search-field"><Search /><input className="field" aria-label="Search medical history" placeholder="Search by visit, document or doctor…" value={search} onChange={e => setSearch(e.target.value)} /></div><select className="field" aria-label="Filter by document type" value={type} onChange={e => setType(e.target.value)}>{['All records','Visit','Lab report','Prescription','Discharge summary'].map(v => <option key={v}>{v}</option>)}</select><select className="field" aria-label="Filter by date" value={date} onChange={e => setDate(e.target.value)}><option>All dates</option><option>This month</option></select></div>{isLoading && <div className="empty-state">Loading your history…</div>}{error && <div className="error-message">Unable to load history. <Button variant="link" onClick={() => refetch()}>Try again</Button></div>}{!isLoading && !error && !filtered.length && <div className="empty-state"><FileText /><h3>No records found</h3><p>Try another search or add your first medical document.</p></div>}<div className="timeline" aria-label="Medical history timeline">{filtered.map(r => <article className="timeline-entry" key={r.id}><span className="timeline-node" /><time>{new Date(`${r.date}T12:00:00`).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</time><div className="timeline-card"><div className="flex justify-between gap-3 items-center"><div className="flex items-center gap-3"><FileIcon /><div><h3>{r.title}</h3><p>{r.doctor} · {r.type}</p></div></div><Button variant="ghost" size="icon" aria-label={`Expand ${r.title}`} onClick={() => setExpanded(v => v.includes(r.id) ? v.filter(id => id !== r.id) : [...v,r.id])}>{expanded.includes(r.id) ? <ChevronUp /> : <ChevronDown />}</Button></div><div className="mt-4 flex gap-2"><Badge tone={r.confirmed?'teal':'blue'}>{r.confirmed ? 'Doctor-confirmed' : 'AI-generated'}</Badge><Badge tone="gray">Fictional demo</Badge></div>{expanded.includes(r.id) && <div className="timeline-details"><p>{r.description}</p><p className="text-xs">{r.confirmed ? 'Confirmed by Dr. Meera Patel' : 'Not yet confirmed by a clinician'} · {r.date}</p><div className="flex flex-wrap gap-2 mt-3"><Button variant="outline" size="sm" onClick={() => setPreview(r)}><Eye />View record</Button><Button variant="ghost" size="sm" onClick={() => recordDownload(r.title,r.description)}><Download />Download</Button><CorrectionButton title={r.title} /></div></div>}</div></article>)}</div>{preview && <DocumentPreview title={preview.title} description={preview.description} onClose={() => setPreview(null)} />}</>;
+  const { data: serverRecords = [], isLoading, error, refetch } = useQuery({ queryKey: ['records'], queryFn: api.getRecords });
+  const [search, setSearch] = useState(''); 
+  const [type, setType] = useState('All records'); 
+  const [date, setDate] = useState('All dates'); 
+  const [expanded, setExpanded] = useState<string[]>([]); 
+  const [preview, setPreview] = useState<MedicalRecord | null>(null);
+
+  // Merge server records with patient's locally saved history & uploaded files
+  const localHistoryKey = `carebrief-history-${patient.id}`;
+  let localRecords: MedicalRecord[] = [];
+  try {
+    localRecords = JSON.parse(localStorage.getItem(localHistoryKey) || '[]');
+  } catch {}
+
+  // Include consultations and documents submitted by patient in real time
+  let consultationRecords: MedicalRecord[] = [];
+  try {
+    const consultations = JSON.parse(localStorage.getItem('carebrief-consultations') || '[]');
+    consultations.forEach((c: any) => {
+      consultationRecords.push({
+        id: c.reference,
+        title: `Consultation (${c.tokenNumber || 'Token'}) - ${c.draft?.specialty || 'General Physician'}`,
+        type: 'Visit',
+        date: c.submittedAt ? c.submittedAt.split('T')[0] : '2026-10-13',
+        doctor: c.draft?.doctor || 'Dr. Meera Patel',
+        hospital: c.draft?.clinic || 'Greenleaf Family Clinic',
+        description: `Chief Complaint: "${c.draft?.complaint}". Vitals: BP ${c.draft?.vitals?.bpSystolic}/${c.draft?.vitals?.bpDiastolic}, Pulse ${c.draft?.vitals?.pulse}. Critical alerts: ${c.dangerousFindings?.map((d: any) => `${d.test} (${d.value} ${d.unit})`).join(', ') || 'Normal baseline'}. Token: ${c.tokenNumber}.`,
+        confirmed: true
+      });
+      if (c.documents && Array.isArray(c.documents)) {
+        c.documents.forEach((d: any) => {
+          consultationRecords.push({
+            id: d.id,
+            title: d.name,
+            type: (d.type as any) || 'Lab report',
+            date: d.reportDate || '2026-10-06',
+            doctor: c.draft?.doctor || 'Dr. Meera Patel',
+            hospital: d.lastHospital || 'Diagnostic Center',
+            description: d.extractedText || 'Document uploaded during intake.',
+            confirmed: false
+          });
+        });
+      }
+    });
+  } catch {}
+
+  const allRecords = [...consultationRecords, ...localRecords, ...serverRecords];
+  const filtered = allRecords.filter(r => 
+    `${r.title} ${r.doctor}`.toLowerCase().includes(search.toLowerCase()) && 
+    (type === 'All records' || r.type === type)
+  );
+
+  return (
+    <>
+      <PageHeading 
+        title="Patient Health Locker & History" 
+        subtitle="All your past consultations, uploaded reports, and clinical prescriptions in one permanent digital vault." 
+        action={
+          <Button asChild variant="outline">
+            <Link to="/consultation"><Plus />Add new report</Link>
+          </Button>
+        } 
+      />
+
+      <div className="search-row">
+        <div className="search-field">
+          <Search />
+          <input 
+            className="field" 
+            aria-label="Search medical history" 
+            placeholder="Search by visit, document or doctor…" 
+            value={search} 
+            onChange={e => setSearch(e.target.value)} 
+          />
+        </div>
+        <select className="field" aria-label="Filter by document type" value={type} onChange={e => setType(e.target.value)}>
+          {['All records','Visit','Lab report','Prescription','Discharge summary'].map(v => <option key={v}>{v}</option>)}
+        </select>
+      </div>
+
+      {isLoading && <div className="empty-state">Loading your health vault…</div>}
+      {error && <div className="error-message">Unable to load history. <Button variant="link" onClick={() => refetch()}>Try again</Button></div>}
+      {!isLoading && !error && !filtered.length && (
+        <div className="empty-state">
+          <FileText />
+          <h3>No records found</h3>
+          <p>Upload a report or book your first consultation.</p>
+        </div>
+      )}
+
+      <div className="timeline" aria-label="Medical history timeline">
+        {filtered.map(r => (
+          <article className="timeline-entry" key={r.id}>
+            <span className="timeline-node" />
+            <time>{r.date ? new Date(`${r.date}T12:00:00`).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) : 'Recent'}</time>
+            <div className="timeline-card shadow-sm">
+              <div className="flex justify-between gap-3 items-center">
+                <div className="flex items-center gap-3">
+                  <FileIcon />
+                  <div>
+                    <h3 className="font-bold">{r.title}</h3>
+                    <p className="text-xs text-muted-foreground">{r.doctor} · {r.type} {r.hospital ? `· ${r.hospital}` : ''}</p>
+                  </div>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  aria-label={`Expand ${r.title}`} 
+                  onClick={() => setExpanded(v => v.includes(r.id) ? v.filter(id => id !== r.id) : [...v, r.id])}
+                >
+                  {expanded.includes(r.id) ? <ChevronUp /> : <ChevronDown />}
+                </Button>
+              </div>
+
+              <div className="mt-4 flex gap-2">
+                <Badge tone={r.confirmed ? 'teal' : 'blue'}>
+                  {r.confirmed ? 'Doctor-confirmed' : 'Patient Uploaded'}
+                </Badge>
+                <Badge tone="gray">Permanent Record</Badge>
+              </div>
+
+              {expanded.includes(r.id) && (
+                <div className="timeline-details">
+                  <p className="text-xs leading-relaxed">{r.description}</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    <Button variant="outline" size="sm" onClick={() => setPreview(r)}>
+                      <Eye size={14} className="mr-1" /> View record
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => recordDownload(r.title, r.description)}>
+                      <Download size={14} className="mr-1" /> Download
+                    </Button>
+                    <CorrectionButton title={r.title} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      {preview && (
+        <DocumentPreview 
+          title={preview.title} 
+          description={preview.description} 
+          onClose={() => setPreview(null)} 
+        />
+      )}
+    </>
+  );
 }
 export function DocumentsPage({ prescriptions = false }: { prescriptions?: boolean }) {
  const { data = [], isLoading, error, refetch } = useQuery({ queryKey:['records'], queryFn:api.getRecords }); const [search,setSearch] = useState(''); const [preview,setPreview] = useState<MedicalRecord | null>(null);

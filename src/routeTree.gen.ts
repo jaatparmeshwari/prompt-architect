@@ -10,33 +10,206 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppointmentsRouteImport } from './routes/appointments'
+import { Route as ConsultationRouteImport } from './routes/consultation'
+import { Route as DoctorRouteImport } from './routes/doctor'
+import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as PrescriptionsRouteImport } from './routes/prescriptions'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ReceiptRouteImport } from './routes/receipt'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as DoctorPatientRouteImport } from './routes/doctor_.patient'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppointmentsRoute = AppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsultationRoute = ConsultationRouteImport.update({
+  id: '/consultation',
+  path: '/consultation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoctorRoute = DoctorRouteImport.update({
+  id: '/doctor',
+  path: '/doctor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsRoute = DocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrescriptionsRoute = PrescriptionsRouteImport.update({
+  id: '/prescriptions',
+  path: '/prescriptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceiptRoute = ReceiptRouteImport.update({
+  id: '/receipt',
+  path: '/receipt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoctorPatientRoute = DoctorPatientRouteImport.update({
+  id: '/doctor_/patient',
+  path: '/doctor/patient',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
+  '/consultation': typeof ConsultationRoute
+  '/doctor': typeof DoctorRoute
+  '/documents': typeof DocumentsRoute
+  '/help': typeof HelpRoute
+  '/history': typeof HistoryRoute
+  '/login': typeof LoginRoute
+  '/prescriptions': typeof PrescriptionsRoute
+  '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/receipt': typeof ReceiptRoute
+  '/signup': typeof SignupRoute
+  '/doctor/patient': typeof DoctorPatientRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
+  '/consultation': typeof ConsultationRoute
+  '/doctor': typeof DoctorRoute
+  '/documents': typeof DocumentsRoute
+  '/help': typeof HelpRoute
+  '/history': typeof HistoryRoute
+  '/login': typeof LoginRoute
+  '/prescriptions': typeof PrescriptionsRoute
+  '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/receipt': typeof ReceiptRoute
+  '/signup': typeof SignupRoute
+  '/doctor/patient': typeof DoctorPatientRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/appointments': typeof AppointmentsRoute
+  '/consultation': typeof ConsultationRoute
+  '/doctor': typeof DoctorRoute
+  '/documents': typeof DocumentsRoute
+  '/help': typeof HelpRoute
+  '/history': typeof HistoryRoute
+  '/login': typeof LoginRoute
+  '/prescriptions': typeof PrescriptionsRoute
+  '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/receipt': typeof ReceiptRoute
+  '/signup': typeof SignupRoute
+  '/doctor_/patient': typeof DoctorPatientRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/appointments'
+    | '/consultation'
+    | '/doctor'
+    | '/documents'
+    | '/help'
+    | '/history'
+    | '/login'
+    | '/prescriptions'
+    | '/privacy'
+    | '/profile'
+    | '/receipt'
+    | '/signup'
+    | '/doctor/patient'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/appointments'
+    | '/consultation'
+    | '/doctor'
+    | '/documents'
+    | '/help'
+    | '/history'
+    | '/login'
+    | '/prescriptions'
+    | '/privacy'
+    | '/profile'
+    | '/receipt'
+    | '/signup'
+    | '/doctor/patient'
+  id:
+    | '__root__'
+    | '/'
+    | '/appointments'
+    | '/consultation'
+    | '/doctor'
+    | '/documents'
+    | '/help'
+    | '/history'
+    | '/login'
+    | '/prescriptions'
+    | '/privacy'
+    | '/profile'
+    | '/receipt'
+    | '/signup'
+    | '/doctor_/patient'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppointmentsRoute: typeof AppointmentsRoute
+  ConsultationRoute: typeof ConsultationRoute
+  DoctorRoute: typeof DoctorRoute
+  DocumentsRoute: typeof DocumentsRoute
+  HelpRoute: typeof HelpRoute
+  HistoryRoute: typeof HistoryRoute
+  LoginRoute: typeof LoginRoute
+  PrescriptionsRoute: typeof PrescriptionsRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ProfileRoute: typeof ProfileRoute
+  ReceiptRoute: typeof ReceiptRoute
+  SignupRoute: typeof SignupRoute
+  DoctorPatientRoute: typeof DoctorPatientRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +221,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/appointments': {
+      id: '/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AppointmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consultation': {
+      id: '/consultation'
+      path: '/consultation'
+      fullPath: '/consultation'
+      preLoaderRoute: typeof ConsultationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/doctor': {
+      id: '/doctor'
+      path: '/doctor'
+      fullPath: '/doctor'
+      preLoaderRoute: typeof DoctorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prescriptions': {
+      id: '/prescriptions'
+      path: '/prescriptions'
+      fullPath: '/prescriptions'
+      preLoaderRoute: typeof PrescriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/receipt': {
+      id: '/receipt'
+      path: '/receipt'
+      fullPath: '/receipt'
+      preLoaderRoute: typeof ReceiptRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/doctor_/patient': {
+      id: '/doctor_/patient'
+      path: '/doctor/patient'
+      fullPath: '/doctor/patient'
+      preLoaderRoute: typeof DoctorPatientRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppointmentsRoute: AppointmentsRoute,
+  ConsultationRoute: ConsultationRoute,
+  DoctorRoute: DoctorRoute,
+  DocumentsRoute: DocumentsRoute,
+  HelpRoute: HelpRoute,
+  HistoryRoute: HistoryRoute,
+  LoginRoute: LoginRoute,
+  PrescriptionsRoute: PrescriptionsRoute,
+  PrivacyRoute: PrivacyRoute,
+  ProfileRoute: ProfileRoute,
+  ReceiptRoute: ReceiptRoute,
+  SignupRoute: SignupRoute,
+  DoctorPatientRoute: DoctorPatientRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
